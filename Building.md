@@ -17,26 +17,26 @@ the tools are largely board and device indepdendent and can be adapted to other 
 ## Building on X86
 
 First compile LLVM, with the ability to target AArch64 as a cross-compiler, and with MLIR enabled:
-In addition, we make some common build optimizations to use a linker other than 'ld' (which tends
-to be quite slow on large link jobs) and to link against libLLVM.so and libClang.so.  You may find
-that other options are also useful.  Note that due to changing MLIR APIs, only a particular revision
-is expected to work.
+In addition, we make some common build optimizations to use a linker ('lld' or 'gold') other than
+'ld' (which tends to be quite slow on large link jobs) and to link against libLLVM.so and libClang
+so.  You may find that other options are also useful.  Note that due to changing MLIR APIs, only a
+particular revision is expected to work.  See utils/clone-llvm.sh for the correct commithash.
 
 ```sh
 git clone https://github.com/llvm/llvm-project
 cd llvm-project
-git checkout ebe408ad8003
+git checkout ${commithash}
 mkdir ${LLVMBUILD}; cd ${LLVMBUILD}
 cmake -GNinja \
-    -DLLVM_LINK_LLVM_DYLIB=ON 
-    -DCLANG_LINK_CLANG_DYLIB=ON
-    -DLLVM_BUILD_UTILS=ON
-    -DLLVM_INSTALL_UTILS=ON
-    -DLLVM_USE_LINKER=lld  (or gold)
-    -DCMAKE_INSTALL_PREFIX=${ACDCInstallDir}
-    -DLLVM_ENABLE_PROJECTS="clang;lld;mlir"
-    -DLLVM_TARGETS_TO_BUILD:STRING="X86;ARM;AArch64;"
-    ..
+    -DLLVM_LINK_LLVM_DYLIB=ON \
+    -DCLANG_LINK_CLANG_DYLIB=ON \
+    -DLLVM_BUILD_UTILS=ON \
+    -DLLVM_INSTALL_UTILS=ON \
+    -DLLVM_USE_LINKER=lld \
+    -DCMAKE_INSTALL_PREFIX=${ACDCInstallDir} \
+    -DLLVM_ENABLE_PROJECTS="clang;lld;mlir" \
+    -DLLVM_TARGETS_TO_BUILD:STRING="X86;ARM;AArch64;" \
+    ../llvm
 ninja; ninja check-llvm; ninja install
 ```
 
@@ -48,7 +48,7 @@ mkdir build; cd build
 cmake -GNinja \
     -DLLVM_DIR=${absolute path to LLVMBUILD}/lib/cmake/llvm \
     -DMLIR_DIR=${absolute path to LLVMBUILD}/lib/cmake/mlir \
-    -DCMAKE_MODULE_PATH=/absolute/path/to/cmakeModules/ \
+    -DCMAKE_MODULE_PATH=${absolute path to cmakeModules}/ \
     -DVitisSysroot=${SYSROOT} \
     -DCMAKE_BUILD_TYPE=Debug \
     ..
@@ -67,6 +67,7 @@ Absolute symbolic links can be converted to relative symbolic links using [symli
 cd /
 sudo symlinks -rc .
 ```
+Following the [platform build steps](Platform.md) will also create a sysroot.
 
 ## Environment setup
 In order to run all the tools, it may be necessary to add some paths into your environment:
