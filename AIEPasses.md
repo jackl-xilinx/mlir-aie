@@ -6,6 +6,8 @@ aie.buffer operations without an address.  This pass determines
 updates each aie.buffer operation without an address to have a
 well-defined address.  This enables later passes to have a
 consistent view of the memory map of a system.
+### `-aie-assign-lock-ids`: Assigns the lockIDs of locks that do not have IDs.
+Assigns the lockIDs of locks that do not have IDs.
 ### `-aie-create-cores`: Create CoreOp, MemOp, and FlowOp of AIE dialect
 Lower toplevel 'call' operations with implicit data movement into
 aie.core, aie.mem, and aie.flow operations with explicit data
@@ -72,16 +74,39 @@ AIE.core(%tile) {
   AIE.useLock(%lockindex, "Acquire", 1)
 }
 ```
+### `-aie-lower-broadcast-packet`: Replace combination of broadcast and packet-switch by packet-flow
+Replace combination of broadcast and packet-switch by packet-flow  
 ### `-aie-lower-memcpy`: Lower aie.memcpy operations to Flows and DMA programs
 aie.memcpy operations are an experimental high-level abstraction which
 move data from one buffer to another.
 This pass lowers them into appropriate aie.flow and aie.mem operations.
+### `-aie-lower-multicast`: Lower AIE.multicast operation to AIE.flow operations
+This pass replaces AIE.multicast operation with the equivalent number of AIE.flow 
+operations. The lowered AIE.flow operations have the same source port but different
+destinations.
 ### `-aie-normalize-address-spaces`: Remove non-default address spaces
 Early in the flow, it is convenient to represent multiple memories using different
 address spaces.  However, after outlining code for AIE engines, the core itself only
 has access to a single address space.  To avoid confusion, this pass normalizes
 any address spaces remaining in the code, converting them to the default address
 space.
+### `-aie-objectFifo-stateful-transform`: Instantiate the buffers and locks of aie.objectFifo.createObjectFifo operations
+Replace each aie.objectFifo.createObjectFifo operation with aie.buffer and aie.lock operations in the 
+producer tile. Convert aie.objectFifo.acquire, aie.objectFifo.release and aie.objectFifo.subviewAccess
+operations into useLock operations by keeping track of acquire/release operations on each objectFifo by
+each process.
+
+If the producer and consumer tiles of an aie.objectFifo.createObjectFifo operation are not adjacent, the 
+pass also establised aie.flow and aie.dma operations to enable communication between the tiles.
+
+Extend the body of each loop that contains operations on objectFifos such that it is unrolled
+based on the number of elements in the objectFifos. If the number of iterations of the loop 
+cannot be divided pefectly by the unrolling factor, the pass duplicates the loop body after 
+the original loop.
+### `-aie-register-objectFifos`: Generate acquire/release patterns for producer/consumer processes registered to an objectFifo
+Generate acquire/release patterns in the CoreOps of associated cores for each 
+aie.objectFifo.registerProcess operation. Patterns are generated as for loops
+of different sizes depending on input patterns.
 ### `-aie-standard-lowering`: Lowering operations in AIE cores' regions to Standard
 Outline code inside a particular AIE.core operation into the llvm dialect.
 BufferOp operations are converted to a GlobalMemrefOp and references to
