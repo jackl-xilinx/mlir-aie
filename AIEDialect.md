@@ -415,7 +415,7 @@ operation ::= `AIE.dmaStart` `(` $channelDir `,` $channelIndex `,` $dest `,` $ch
 ```
 
 This operation declares a DMA channel to be used for data transfer. It usually exists inside
-either a MemOp (representing a TileDMA channel), or in a ShimDMAOp (representing a ShimDMA channel).
+either a MemOp (representing a TileDMA), or in a ShimDMAOp (representing a ShimDMA).
 A channel is defined by a direction (i.e., MM2S or S2MM) and an index.
 
 Example:
@@ -430,7 +430,7 @@ Example:
     AIE.end
 ```
 
-Comceptually, the AIE.dmaStart operation is a terminator that either passes
+Conceptually, the AIE.dmaStart operation is a terminator that either passes
 control to a basic block containing DMA operations (through its first successor)
 or to a basic block for another dmaStart, to an AIE.end operation.
 
@@ -498,23 +498,23 @@ Declare a buffer in external memory
 Syntax:
 
 ```
-operation ::= `AIE.external_buffer` $address attr-dict `:` type($buffer)
+operation ::= `AIE.external_buffer` attr-dict `:` type($buffer)
 ```
 
 This operation represents a buffer that exists in some physical
-location in a device, most likely external memory.
+location in a device, most likely external memory. The exact address
+of the external buffer is passed by the mlir_aie_external_set_addr()
+and mlir_aie_external_set_addr_myBuffer_ functions in the associated 
+.cpp test file. 
+
+These external buffers are used within the buffer descriptors of a 
+shimDMA, i.e., within AIE_DMABdOp operations of a AIE_ShimDMAOp.
 
 Example:
 ```
-  %buf = AIE.external_buffer 0x200000 : memref<256xi64>
+  %buf = AIE.external_buffer : memref<256xi64>
 ```
-This operation represents a buffer living at physical address 0x200000.
-
-#### Attributes:
-
-| Attribute | MLIR Type | Description |
-| :-------: | :-------: | ----------- |
-| `address` | ::mlir::IntegerAttr | 64-bit signless integer attribute
+This operation represents an external buffer.
 
 #### Results:
 
@@ -820,7 +820,22 @@ operation ::= `AIE.mem` `(` $tile `)` regions attr-dict
 
 This operation creates a Memory module that belongs to a tile.
 The region of a MemOp is used to setup the DMAs and Block Descriptors.
-See DMAOp and DMABdOp for more concrete examples.
+See DMAStartOp and DMABdOp for more concrete examples on DMAs and Block Descriptors.
+
+Example:
+```
+  m73 = AIE.mem(%t73) {
+      %srcDma = AIE.dmaStart("S2MM", 0, ^bd0, ^end)
+    ^bd0:
+      AIE.useLock(%lock, "Acquire", 0)
+      AIE.dmaBd(<%buf : memref<64xi16>, 0, 64>, 0)
+      AIE.useLock(%lock, "Release", 1)
+      cf.br ^bd0
+    ^end:
+      AIE.end
+  }
+```
+Create the memory module for tile %t73 and setup one DMA channel and one Buffer Descriptor.
 
 Interfaces: CallableOpInterface, FlowEndPoint
 
@@ -1009,13 +1024,13 @@ Create a circular buffer or channel between two tiles
 Syntax:
 
 ```
-operation ::= `AIE.objectFifo.createObjectFifo` `(` $producerTile `,` $consumerTile `,` $elemNumber`)` attr-dict `:` type($fifo)
+operation ::= `AIE.objectFifo.createObjectFifo` `(` $producerTile `,` `{` $consumerTiles `}` `,` $elemNumber`)` attr-dict `:` type($fifo)
 ```
 
-The "aie.createObjectFifo" operation creates a circular buffer established between a producer and
-a consumer, which are "aie.tile" operations. The aie.createObjectFifo instantiates the given number of 
-buffers (of given output type) and their locks in the Memory Module of the producer tile after lowering. 
-These elements represent the conceptual depth of the objectFifo.
+The "aie.createObjectFifo" operation creates a circular buffer established between a producer and one or 
+more consumers, which are "aie.tile" operations. The aie.createObjectFifo instantiates the given number of 
+buffers (of given output type) and their locks in the Memory Module of the appropriate tile(s) after lowering, 
+based on tile-adjacency. These elements represent the conceptual depth of the objectFifo.
 
 This operation is then converted by the AIEObjectFifoStatefulTransformPass into buffers and their associated 
 locks. The pass also establishes Flow and DMA operations between the producer and consumer tiles if they are
@@ -1023,9 +1038,9 @@ not adjacent.
 
 Example:
 ```
-  %objFifo = AIE.objectFifo.createObjectFifo(%tile12, %tile13, 4) : !AIE.objectFifo<memref<16xi32>> 
+  %objFifo = AIE.objectFifo.createObjectFifo(%tile12, {%tile13, %tile23}, 4) : !AIE.objectFifo<memref<16xi32>> 
 ```
-This operation creates an objectFifo between tiles 12 and 13 of 4 elements, each a buffer of 16 32-bit integers.
+This operation creates an objectFifo between %tile12, %tile13 and %tile23 of 4 elements, each a buffer of 16 32-bit integers.
 
 #### Attributes:
 
@@ -1038,7 +1053,7 @@ This operation creates an objectFifo between tiles 12 and 13 of 4 elements, each
 | Operand | Description |
 | :-----: | ----------- |
 | `producerTile` | index
-| `consumerTile` | index
+| `consumerTiles` | index
 
 #### Results:
 
@@ -1523,6 +1538,26 @@ Syntax:
 operation ::= `AIE.shimDMA` `(` $tile `)` regions attr-dict
 ```
 
+This operation creates a DMA that belongs to a shim tile.
+The region of a ShimDMAOp is used to setup the DMAs and Block Descriptors.
+
+Example:
+```
+  %buf = AIE.external_buffer : memref<256xi64>
+  %lock1 = AIE.lock(%t70, 1)
+
+  %dma = AIE.shimDMA(%t70) {
+      AIE.dmaStart(MM2S, 0, ^bd0, ^end)
+    ^bd0:
+      AIE.useLock(%lock1, Acquire, 1)
+      AIE.dmaBd(<%buf : memref<512 x i16>, 0, 512>, 0)
+      AIE.useLock(%lock1, Release, 0)
+      cf.br ^bd0
+    ^end:
+      AIE.end
+  }
+```
+Create the shimDMA for tile %t70 and setup one DMA channel and one Buffer Descriptor.
 
 Interfaces: FlowEndPoint
 
