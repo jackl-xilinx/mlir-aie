@@ -1,0 +1,33 @@
+{
+  "Placement": [
+    {
+      "LogicalInstance": "PS_AIE_Config_Slave",
+      "PhysicalInstance": [
+        "NOC_NSU128_X1Y6",
+        "NOC_NSU128_X2Y6",
+        "NOC_NSU128_X3Y6",
+        "NOC_NSU128_X4Y6",
+        "NOC_NSU128_X5Y6",
+        "NOC_NSU128_X6Y6",
+        "NOC_NSU128_X7Y6",
+        "NOC_NSU128_X8Y6",
+        "NOC_NSU128_X9Y6",
+        "NOC_NSU128_X10Y6",
+        "NOC_NSU128_X11Y6",
+        "NOC_NSU128_X12Y6",
+        "NOC_NSU128_X13Y6",
+        "NOC_NSU128_X14Y6",
+        "NOC_NSU128_X15Y6",
+        "NOC_NSU128_X16Y6"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S00_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X2Y10"
+      ],
+      "IsSoft": false
+    }
+  ]
+}

@@ -42,7 +42,13 @@ main(int argc, char *argv[])
     // mlir_aie_configure_dmas - TileDMAs not used in this example.
     // mlir_aie_initialize_locks - Locks not used in this example.
     aie_libxaie_ctx_t *_xaie = mlir_aie_init_libxaie();
-    mlir_aie_init_device(_xaie);                        
+    mlir_aie_init_device(_xaie);
+
+    #if defined(__AIESIM__) && !defined(__CDO__)
+      printf("Turning ecc off\n");
+      XAie_TurnEccOff(&(_xaie->DevInst));
+    #endif
+
     mlir_aie_configure_cores(_xaie);
     mlir_aie_configure_switchboxes(_xaie);
     mlir_aie_configure_dmas(_xaie);
@@ -68,12 +74,27 @@ main(int argc, char *argv[])
     mlir_aie_check("Before start cores:", mlir_aie_read_buffer_a24(_xaie, 5), 0,
                    errors);
 
+    printf("\ntile(1,4) status\n");
+    mlir_aie_print_tile_status(_xaie, 1, 4);
+    printf("\ntile(2,4) status\n");
+    mlir_aie_print_tile_status(_xaie, 2, 4);
+
     // Helper function to enable all AIE cores
     printf("Start cores\n");
     mlir_aie_start_cores(_xaie);
 
+    // printf("\ntile(1,4) status\n");
+    // mlir_aie_print_tile_status(_xaie, 1, 4);
+    // printf("\ntile(2,4) status\n");
+    // mlir_aie_print_tile_status(_xaie, 2, 4);
+
     // Wait time for cores to run. Number used here is much larger than needed.
     usleep(100);
+    int timeout = 1000; // ~1 sec in aiesim
+    if(mlir_aie_acquire_lock_a24_2(_xaie, 1, timeout) == XAIE_OK)
+      printf("Error: Acquired input lock(0). Done.\n");
+    else
+      printf("Timed out (%d) while trying to acquire input lock (0). Done.\n", timeout);
 
     // Check buffer at index 3 again for expected value of 14 for tile(1,4)    
     mlir_aie_check("After start cores:", mlir_aie_read_buffer_a24(_xaie, 3), 14,
@@ -81,6 +102,11 @@ main(int argc, char *argv[])
     // Check buffer at index 5 again for expected value of 114 for tile(3,4)    
     mlir_aie_check("After start cores:", mlir_aie_read_buffer_a24(_xaie, 5), 114,
                    errors);
+
+    // printf("\ntile(1,4) status\n");
+    // mlir_aie_print_tile_status(_xaie, 1, 4);
+    // printf("\ntile(2,4) status\n");
+    // mlir_aie_print_tile_status(_xaie, 2, 4);
 
     // Print Pass/Fail result of our test
     int res = 0;

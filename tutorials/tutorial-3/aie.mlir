@@ -49,6 +49,7 @@ module @tutorial_3 {
     // %core24 = AIE.core(%tile24) {
     %core14 = AIE.core(%tile14) {
         // This acquire will stall since locks are initialized to Release, 0
+        AIE.useLock(%lock24_2, "Acquire", 0)
         AIE.useLock(%lock24_1, "Acquire", 1)
 
         %idx1 = arith.constant 3 : index
@@ -58,8 +59,10 @@ module @tutorial_3 {
 		%idx2 = arith.constant 5 : index
 		memref.store %d2, %buf[%idx2] : memref<256xi32> 
 
+
+        AIE.useLock(%lock24_2, "Release", 1)
         // This release doesn't do much in our example but mimics ping-pong
-        // AIE.useLock(%lock24_1, "Release", 0)
+        AIE.useLock(%lock24_1, "Release", 0)
         // AIE.useLock(%lock24_2, "Acquire", 0)
         AIE.end
     }

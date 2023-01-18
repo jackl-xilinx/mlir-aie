@@ -1,0 +1,1576 @@
+{
+  "SolutionType": "OPTIMAL",
+  "LockAllDestIds": false,
+  "Paths": [
+    {
+      "Phase": 0,
+      "From": "S00_AXI",
+      "FromLocked": false,
+      "To": "MC",
+      "ToLocked": false,
+      "Port": "PORT0",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "ReadBW": 2000,
+      "WriteBW": 2000,
+      "ReadAchievedBW": 2000,
+      "WriteAchievedBW": 2000,
+      "ReadLatency": 100,
+      "WriteLatency": 100,
+      "ReadBestPossibleLatency": 100,
+      "WriteBestPossibleLatency": 100,
+      "PathLocked": false,
+      "Nets": [
+        {
+          "PhyInstanceStart": "DDRMC_X1Y0",
+          "PhyInstanceEnd": "NOC_NMU128_X2Y10",
+          "VC": 6,
+          "CommType": "READ",
+          "Connections": [
+            "DDRMC_X1Y0",
+            "Port0_resp",
+            "NOC_NPS5555_X12Y0",
+            "port1_in",
+            "NOC_NPS5555_X12Y0",
+            "port0_out",
+            "NOC_NPS5555_X9Y0",
+            "port2_in",
+            "NOC_NPS5555_X9Y0",
+            "port3_out",
+            "NOC_NPS5555_X9Y1",
+            "port1_in",
+            "NOC_NPS5555_X9Y1",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y1",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y1",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y3",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y3",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y5",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y5",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y7",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y7",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y9",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y9",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y11",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y11",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y13",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y13",
+            "port0_out",
+            "NOC_NPS5555_X10Y3",
+            "port1_in",
+            "NOC_NPS5555_X10Y3",
+            "port0_out",
+            "NOC_NPS5555_X7Y3",
+            "port2_in",
+            "NOC_NPS5555_X7Y3",
+            "port0_out",
+            "NOC_NPS5555_X4Y3",
+            "port2_in",
+            "NOC_NPS5555_X4Y3",
+            "port0_out",
+            "NOC_NPS5555_X1Y3",
+            "port2_in",
+            "NOC_NPS5555_X1Y3",
+            "port3_out",
+            "NOC_NMU128_X2Y10",
+            "resp_in"
+          ],
+          "RequiredBW": 2000,
+          "AchievedBW": 2000,
+          "RequiredLatency": 100,
+          "AchievedLatency": 38
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X2Y10",
+          "PhyInstanceEnd": "DDRMC_X1Y0",
+          "VC": 4,
+          "CommType": "READ_REQ",
+          "Connections": [
+            "NOC_NMU128_X2Y10",
+            "req_out",
+            "NOC_NPS5555_X1Y3",
+            "port3_in",
+            "NOC_NPS5555_X1Y3",
+            "port2_out",
+            "NOC_NPS5555_X4Y3",
+            "port0_in",
+            "NOC_NPS5555_X4Y3",
+            "port2_out",
+            "NOC_NPS5555_X7Y3",
+            "port0_in",
+            "NOC_NPS5555_X7Y3",
+            "port2_out",
+            "NOC_NPS5555_X10Y3",
+            "port0_in",
+            "NOC_NPS5555_X10Y3",
+            "port1_out",
+            "NOC_NPS_VNOC_X0Y13",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y13",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y11",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y11",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y9",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y9",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y7",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y7",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y5",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y5",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y3",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y3",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y1",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y1",
+            "port2_out",
+            "NOC_NPS5555_X9Y1",
+            "port0_in",
+            "NOC_NPS5555_X9Y1",
+            "port1_out",
+            "NOC_NPS5555_X9Y0",
+            "port3_in",
+            "NOC_NPS5555_X9Y0",
+            "port2_out",
+            "NOC_NPS5555_X12Y0",
+            "port0_in",
+            "NOC_NPS5555_X12Y0",
+            "port1_out",
+            "DDRMC_X1Y0",
+            "Port0_req"
+          ],
+          "RequiredBW": 500,
+          "AchievedBW": 500,
+          "RequiredLatency": 100,
+          "AchievedLatency": 38
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X2Y10",
+          "PhyInstanceEnd": "DDRMC_X1Y0",
+          "VC": 5,
+          "CommType": "WRITE",
+          "Connections": [
+            "NOC_NMU128_X2Y10",
+            "req_out",
+            "NOC_NPS5555_X1Y3",
+            "port3_in",
+            "NOC_NPS5555_X1Y3",
+            "port2_out",
+            "NOC_NPS5555_X4Y3",
+            "port0_in",
+            "NOC_NPS5555_X4Y3",
+            "port2_out",
+            "NOC_NPS5555_X7Y3",
+            "port0_in",
+            "NOC_NPS5555_X7Y3",
+            "port2_out",
+            "NOC_NPS5555_X10Y3",
+            "port0_in",
+            "NOC_NPS5555_X10Y3",
+            "port1_out",
+            "NOC_NPS_VNOC_X0Y13",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y13",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y11",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y11",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y9",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y9",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y7",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y7",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y5",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y5",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y3",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y3",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y1",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y1",
+            "port2_out",
+            "NOC_NPS5555_X9Y1",
+            "port0_in",
+            "NOC_NPS5555_X9Y1",
+            "port1_out",
+            "NOC_NPS5555_X9Y0",
+            "port3_in",
+            "NOC_NPS5555_X9Y0",
+            "port2_out",
+            "NOC_NPS5555_X12Y0",
+            "port0_in",
+            "NOC_NPS5555_X12Y0",
+            "port1_out",
+            "DDRMC_X1Y0",
+            "Port0_req"
+          ],
+          "RequiredBW": 2500,
+          "AchievedBW": 2500,
+          "RequiredLatency": 100,
+          "AchievedLatency": 38
+        },
+        {
+          "PhyInstanceStart": "DDRMC_X1Y0",
+          "PhyInstanceEnd": "NOC_NMU128_X2Y10",
+          "VC": 7,
+          "CommType": "WRITE_RESP",
+          "Connections": [
+            "DDRMC_X1Y0",
+            "Port0_resp",
+            "NOC_NPS5555_X12Y0",
+            "port1_in",
+            "NOC_NPS5555_X12Y0",
+            "port0_out",
+            "NOC_NPS5555_X9Y0",
+            "port2_in",
+            "NOC_NPS5555_X9Y0",
+            "port3_out",
+            "NOC_NPS5555_X9Y1",
+            "port1_in",
+            "NOC_NPS5555_X9Y1",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y1",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y1",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y3",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y3",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y5",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y5",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y7",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y7",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y9",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y9",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y11",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y11",
+            "port0_out",
+            "NOC_NPS_VNOC_X0Y13",
+            "port2_in",
+            "NOC_NPS_VNOC_X0Y13",
+            "port0_out",
+            "NOC_NPS5555_X10Y3",
+            "port1_in",
+            "NOC_NPS5555_X10Y3",
+            "port0_out",
+            "NOC_NPS5555_X7Y3",
+            "port2_in",
+            "NOC_NPS5555_X7Y3",
+            "port0_out",
+            "NOC_NPS5555_X4Y3",
+            "port2_in",
+            "NOC_NPS5555_X4Y3",
+            "port0_out",
+            "NOC_NPS5555_X1Y3",
+            "port2_in",
+            "NOC_NPS5555_X1Y3",
+            "port3_out",
+            "NOC_NMU128_X2Y10",
+            "resp_in"
+          ],
+          "RequiredBW": 500,
+          "AchievedBW": 500,
+          "RequiredLatency": 100,
+          "AchievedLatency": 38
+        }
+      ]
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "FromLocked": false,
+      "To": "PS_AIE_Config_Slave",
+      "ToLocked": false,
+      "Port": "PORT0",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "ReadBW": 1,
+      "WriteBW": 1,
+      "ReadAchievedBW": 1,
+      "WriteAchievedBW": 1,
+      "ReadLatency": 100,
+      "WriteLatency": 100,
+      "ReadBestPossibleLatency": 100,
+      "WriteBestPossibleLatency": 100,
+      "PathLocked": false,
+      "Nets": [
+        {
+          "PhyInstanceStart": "NOC_NSU128_X7Y6",
+          "PhyInstanceEnd": "NOC_NMU128_X0Y5",
+          "VC": 6,
+          "CommType": "READ",
+          "Connections": [
+            "NOC_NSU128_X7Y6",
+            "resp",
+            "NOC_NPS5555_X13Y4",
+            "port1_in",
+            "NOC_NPS5555_X13Y4",
+            "port0_out",
+            "NOC_NCRB_X0Y1",
+            "port1_in",
+            "NOC_NCRB_X0Y1",
+            "port1_out",
+            "NOC_NPS5555_X10Y4",
+            "port2_in",
+            "NOC_NPS5555_X10Y4",
+            "port3_out",
+            "NOC_NPS5555_X10Y3",
+            "port3_in",
+            "NOC_NPS5555_X10Y3",
+            "port1_out",
+            "NOC_NPS_VNOC_X0Y13",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y13",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y11",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y11",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y9",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y9",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y7",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y7",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y5",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y5",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y3",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y3",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y1",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y1",
+            "port2_out",
+            "NOC_NPS5555_X9Y1",
+            "port0_in",
+            "NOC_NPS5555_X9Y1",
+            "port1_out",
+            "NOC_NPS5555_X9Y0",
+            "port3_in",
+            "NOC_NPS5555_X9Y0",
+            "port0_out",
+            "NOC_NPS5555_X6Y0",
+            "port2_in",
+            "NOC_NPS5555_X6Y0",
+            "port3_out",
+            "NOC_NMU128_X0Y5",
+            "resp_in"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 41
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X0Y5",
+          "PhyInstanceEnd": "NOC_NSU128_X7Y6",
+          "VC": 4,
+          "CommType": "READ_REQ",
+          "Connections": [
+            "NOC_NMU128_X0Y5",
+            "req_out",
+            "NOC_NPS5555_X6Y0",
+            "port3_in",
+            "NOC_NPS5555_X6Y0",
+            "port2_out",
+            "NOC_NPS5555_X9Y0",
+            "port0_in",
+            "NOC_NPS5555_X9Y0",
+            "port3_out",
+            "NOC_NPS5555_X9Y1",
+            "port1_in",
+            "NOC_NPS5555_X9Y1",
+            "port2_out",
+            "NOC_NPS5555_X11Y1",
+            "port0_in",
+            "NOC_NPS5555_X11Y1",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y0",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y0",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y2",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y2",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y4",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y4",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y6",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y6",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y8",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y8",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y10",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y10",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y12",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y12",
+            "port2_out",
+            "NOC_NPS5555_X10Y4",
+            "port1_in",
+            "NOC_NPS5555_X10Y4",
+            "port2_out",
+            "NOC_NCRB_X0Y0",
+            "port1_in",
+            "NOC_NCRB_X0Y0",
+            "port1_out",
+            "NOC_NPS5555_X13Y4",
+            "port0_in",
+            "NOC_NPS5555_X13Y4",
+            "port1_out",
+            "NOC_NSU128_X7Y6",
+            "req"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 41
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X0Y5",
+          "PhyInstanceEnd": "NOC_NSU128_X7Y6",
+          "VC": 5,
+          "CommType": "WRITE",
+          "Connections": [
+            "NOC_NMU128_X0Y5",
+            "req_out",
+            "NOC_NPS5555_X6Y0",
+            "port3_in",
+            "NOC_NPS5555_X6Y0",
+            "port2_out",
+            "NOC_NPS5555_X9Y0",
+            "port0_in",
+            "NOC_NPS5555_X9Y0",
+            "port3_out",
+            "NOC_NPS5555_X9Y1",
+            "port1_in",
+            "NOC_NPS5555_X9Y1",
+            "port2_out",
+            "NOC_NPS5555_X11Y1",
+            "port0_in",
+            "NOC_NPS5555_X11Y1",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y0",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y0",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y2",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y2",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y4",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y4",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y6",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y6",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y8",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y8",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y10",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y10",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y12",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y12",
+            "port2_out",
+            "NOC_NPS5555_X10Y4",
+            "port1_in",
+            "NOC_NPS5555_X10Y4",
+            "port2_out",
+            "NOC_NCRB_X0Y0",
+            "port1_in",
+            "NOC_NCRB_X0Y0",
+            "port1_out",
+            "NOC_NPS5555_X13Y4",
+            "port0_in",
+            "NOC_NPS5555_X13Y4",
+            "port1_out",
+            "NOC_NSU128_X7Y6",
+            "req"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 41
+        },
+        {
+          "PhyInstanceStart": "NOC_NSU128_X7Y6",
+          "PhyInstanceEnd": "NOC_NMU128_X0Y5",
+          "VC": 7,
+          "CommType": "WRITE_RESP",
+          "Connections": [
+            "NOC_NSU128_X7Y6",
+            "resp",
+            "NOC_NPS5555_X13Y4",
+            "port1_in",
+            "NOC_NPS5555_X13Y4",
+            "port0_out",
+            "NOC_NCRB_X0Y1",
+            "port1_in",
+            "NOC_NCRB_X0Y1",
+            "port1_out",
+            "NOC_NPS5555_X10Y4",
+            "port2_in",
+            "NOC_NPS5555_X10Y4",
+            "port3_out",
+            "NOC_NPS5555_X10Y3",
+            "port3_in",
+            "NOC_NPS5555_X10Y3",
+            "port1_out",
+            "NOC_NPS_VNOC_X0Y13",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y13",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y11",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y11",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y9",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y9",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y7",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y7",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y5",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y5",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y3",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y3",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y1",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y1",
+            "port2_out",
+            "NOC_NPS5555_X9Y1",
+            "port0_in",
+            "NOC_NPS5555_X9Y1",
+            "port1_out",
+            "NOC_NPS5555_X9Y0",
+            "port3_in",
+            "NOC_NPS5555_X9Y0",
+            "port0_out",
+            "NOC_NPS5555_X6Y0",
+            "port2_in",
+            "NOC_NPS5555_X6Y0",
+            "port3_out",
+            "NOC_NMU128_X0Y5",
+            "resp_in"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 41
+        }
+      ]
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "FromLocked": false,
+      "To": "MC",
+      "ToLocked": false,
+      "Port": "PORT0",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "ReadBW": 1,
+      "WriteBW": 1,
+      "ReadAchievedBW": 1,
+      "WriteAchievedBW": 1,
+      "ReadLatency": 100,
+      "WriteLatency": 100,
+      "ReadBestPossibleLatency": 100,
+      "WriteBestPossibleLatency": 100,
+      "PathLocked": false,
+      "Nets": [
+        {
+          "PhyInstanceStart": "DDRMC_X1Y0",
+          "PhyInstanceEnd": "NOC_NMU128_X0Y5",
+          "VC": 6,
+          "CommType": "READ",
+          "Connections": [
+            "DDRMC_X1Y0",
+            "Port0_resp",
+            "NOC_NPS5555_X12Y0",
+            "port1_in",
+            "NOC_NPS5555_X12Y0",
+            "port0_out",
+            "NOC_NPS5555_X9Y0",
+            "port2_in",
+            "NOC_NPS5555_X9Y0",
+            "port0_out",
+            "NOC_NPS5555_X6Y0",
+            "port2_in",
+            "NOC_NPS5555_X6Y0",
+            "port3_out",
+            "NOC_NMU128_X0Y5",
+            "resp_in"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 16
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X0Y5",
+          "PhyInstanceEnd": "DDRMC_X1Y0",
+          "VC": 4,
+          "CommType": "READ_REQ",
+          "Connections": [
+            "NOC_NMU128_X0Y5",
+            "req_out",
+            "NOC_NPS5555_X6Y0",
+            "port3_in",
+            "NOC_NPS5555_X6Y0",
+            "port2_out",
+            "NOC_NPS5555_X9Y0",
+            "port0_in",
+            "NOC_NPS5555_X9Y0",
+            "port2_out",
+            "NOC_NPS5555_X12Y0",
+            "port0_in",
+            "NOC_NPS5555_X12Y0",
+            "port1_out",
+            "DDRMC_X1Y0",
+            "Port0_req"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 16
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X0Y5",
+          "PhyInstanceEnd": "DDRMC_X1Y0",
+          "VC": 5,
+          "CommType": "WRITE",
+          "Connections": [
+            "NOC_NMU128_X0Y5",
+            "req_out",
+            "NOC_NPS5555_X6Y0",
+            "port3_in",
+            "NOC_NPS5555_X6Y0",
+            "port2_out",
+            "NOC_NPS5555_X9Y0",
+            "port0_in",
+            "NOC_NPS5555_X9Y0",
+            "port2_out",
+            "NOC_NPS5555_X12Y0",
+            "port0_in",
+            "NOC_NPS5555_X12Y0",
+            "port1_out",
+            "DDRMC_X1Y0",
+            "Port0_req"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 16
+        },
+        {
+          "PhyInstanceStart": "DDRMC_X1Y0",
+          "PhyInstanceEnd": "NOC_NMU128_X0Y5",
+          "VC": 7,
+          "CommType": "WRITE_RESP",
+          "Connections": [
+            "DDRMC_X1Y0",
+            "Port0_resp",
+            "NOC_NPS5555_X12Y0",
+            "port1_in",
+            "NOC_NPS5555_X12Y0",
+            "port0_out",
+            "NOC_NPS5555_X9Y0",
+            "port2_in",
+            "NOC_NPS5555_X9Y0",
+            "port0_out",
+            "NOC_NPS5555_X6Y0",
+            "port2_in",
+            "NOC_NPS5555_X6Y0",
+            "port3_out",
+            "NOC_NMU128_X0Y5",
+            "resp_in"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 16
+        }
+      ]
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "FromLocked": false,
+      "To": "PS_PL_RTP_Slave",
+      "ToLocked": false,
+      "Port": "PORT0",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "ReadBW": 1,
+      "WriteBW": 1,
+      "ReadAchievedBW": 1,
+      "WriteAchievedBW": 1,
+      "ReadLatency": 100,
+      "WriteLatency": 100,
+      "ReadBestPossibleLatency": 100,
+      "WriteBestPossibleLatency": 100,
+      "PathLocked": false,
+      "Nets": [
+        {
+          "PhyInstanceStart": "NOC_NSU512_X0Y0",
+          "PhyInstanceEnd": "NOC_NMU128_X0Y5",
+          "VC": 6,
+          "CommType": "READ",
+          "Connections": [
+            "NOC_NSU512_X0Y0",
+            "resp",
+            "NOC_NPS_VNOC_X0Y0",
+            "port3_in",
+            "NOC_NPS_VNOC_X0Y0",
+            "port0_out",
+            "NOC_NPS5555_X11Y1",
+            "port2_in",
+            "NOC_NPS5555_X11Y1",
+            "port0_out",
+            "NOC_NPS5555_X9Y1",
+            "port2_in",
+            "NOC_NPS5555_X9Y1",
+            "port1_out",
+            "NOC_NPS5555_X9Y0",
+            "port3_in",
+            "NOC_NPS5555_X9Y0",
+            "port0_out",
+            "NOC_NPS5555_X6Y0",
+            "port2_in",
+            "NOC_NPS5555_X6Y0",
+            "port3_out",
+            "NOC_NMU128_X0Y5",
+            "resp_in"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 20
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X0Y5",
+          "PhyInstanceEnd": "NOC_NSU512_X0Y0",
+          "VC": 4,
+          "CommType": "READ_REQ",
+          "Connections": [
+            "NOC_NMU128_X0Y5",
+            "req_out",
+            "NOC_NPS5555_X6Y0",
+            "port3_in",
+            "NOC_NPS5555_X6Y0",
+            "port2_out",
+            "NOC_NPS5555_X9Y0",
+            "port0_in",
+            "NOC_NPS5555_X9Y0",
+            "port3_out",
+            "NOC_NPS5555_X9Y1",
+            "port1_in",
+            "NOC_NPS5555_X9Y1",
+            "port2_out",
+            "NOC_NPS5555_X11Y1",
+            "port0_in",
+            "NOC_NPS5555_X11Y1",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y0",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y0",
+            "port3_out",
+            "NOC_NSU512_X0Y0",
+            "req"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 20
+        },
+        {
+          "PhyInstanceStart": "NOC_NMU128_X0Y5",
+          "PhyInstanceEnd": "NOC_NSU512_X0Y0",
+          "VC": 5,
+          "CommType": "WRITE",
+          "Connections": [
+            "NOC_NMU128_X0Y5",
+            "req_out",
+            "NOC_NPS5555_X6Y0",
+            "port3_in",
+            "NOC_NPS5555_X6Y0",
+            "port2_out",
+            "NOC_NPS5555_X9Y0",
+            "port0_in",
+            "NOC_NPS5555_X9Y0",
+            "port3_out",
+            "NOC_NPS5555_X9Y1",
+            "port1_in",
+            "NOC_NPS5555_X9Y1",
+            "port2_out",
+            "NOC_NPS5555_X11Y1",
+            "port0_in",
+            "NOC_NPS5555_X11Y1",
+            "port2_out",
+            "NOC_NPS_VNOC_X0Y0",
+            "port0_in",
+            "NOC_NPS_VNOC_X0Y0",
+            "port3_out",
+            "NOC_NSU512_X0Y0",
+            "req"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 20
+        },
+        {
+          "PhyInstanceStart": "NOC_NSU512_X0Y0",
+          "PhyInstanceEnd": "NOC_NMU128_X0Y5",
+          "VC": 7,
+          "CommType": "WRITE_RESP",
+          "Connections": [
+            "NOC_NSU512_X0Y0",
+            "resp",
+            "NOC_NPS_VNOC_X0Y0",
+            "port3_in",
+            "NOC_NPS_VNOC_X0Y0",
+            "port0_out",
+            "NOC_NPS5555_X11Y1",
+            "port2_in",
+            "NOC_NPS5555_X11Y1",
+            "port0_out",
+            "NOC_NPS5555_X9Y1",
+            "port2_in",
+            "NOC_NPS5555_X9Y1",
+            "port1_out",
+            "NOC_NPS5555_X9Y0",
+            "port3_in",
+            "NOC_NPS5555_X9Y0",
+            "port0_out",
+            "NOC_NPS5555_X6Y0",
+            "port2_in",
+            "NOC_NPS5555_X6Y0",
+            "port3_out",
+            "NOC_NMU128_X0Y5",
+            "resp_in"
+          ],
+          "RequiredBW": 1,
+          "AchievedBW": 1,
+          "RequiredLatency": 100,
+          "AchievedLatency": 20
+        }
+      ]
+    }
+  ],
+  "Components": [
+    {
+      "Name": "DDRMC_X1Y0",
+      "TrafficLInst": "MC",
+      "DestId": 256,
+      "PortIndex": 0
+    },
+    {
+      "Name": "DDRMC_X1Y0",
+      "TrafficLInst": "MC",
+      "DestId": 0,
+      "PortIndex": 1
+    },
+    {
+      "Name": "DDRMC_X1Y0",
+      "TrafficLInst": "MC",
+      "DestId": 0,
+      "PortIndex": 2
+    },
+    {
+      "Name": "DDRMC_X1Y0",
+      "TrafficLInst": "MC",
+      "DestId": 0,
+      "PortIndex": 3
+    },
+    {
+      "Name": "NOC_NPS5555_X12Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X9Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X9Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y5",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y7",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y9",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y11",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y13",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X10Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X7Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X4Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X1Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NMU128_X2Y10",
+      "TrafficLInst": "S00_AXI",
+      "DestId": 64
+    },
+    {
+      "Name": "NOC_NSU128_X7Y6",
+      "TrafficLInst": "PS_AIE_Config_Slave",
+      "DestId": 128
+    },
+    {
+      "Name": "NOC_NPS5555_X13Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NCRB_X0Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X10Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X6Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NMU128_X0Y5",
+      "TrafficLInst": "PS_AIE_Config_Master",
+      "DestId": 192
+    },
+    {
+      "Name": "NOC_NPS5555_X11Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y6",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y8",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y10",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X0Y12",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NCRB_X0Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NSU512_X0Y0",
+      "TrafficLInst": "PS_PL_RTP_Slave",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X1Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X4Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X7Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X13Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X16Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X16Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NCRB_X1Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NCRB_X1Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X19Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X19Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X22Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X22Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NCRB_X2Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NCRB_X2Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X25Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X25Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X28Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X28Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X31Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X31Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X34Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X34Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y13",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y13",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y13",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y12",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y12",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y12",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y11",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y11",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y11",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y10",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y10",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y10",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y9",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y9",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y9",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y8",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y8",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y8",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y7",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y7",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y7",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y6",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y6",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y6",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y5",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y5",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y5",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y4",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y3",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X1Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X2Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS_VNOC_X3Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X0Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X0Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X2Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X2Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X3Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X3Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X5Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X5Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X6Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X8Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X8Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X9Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X11Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X11Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X12Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X12Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X14Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X14Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X14Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X15Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X15Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X15Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X17Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X17Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X17Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X18Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X18Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X18Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X20Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X20Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X20Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X21Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X21Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X21Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X23Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X23Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X23Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X24Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X24Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X24Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X26Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X26Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X26Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X27Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X27Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X27Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X29Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X29Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X29Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X30Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X30Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X30Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X32Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X32Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X32Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X33Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X33Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X33Y2",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X35Y0",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X35Y1",
+      "DestId": 0
+    },
+    {
+      "Name": "NOC_NPS5555_X35Y2",
+      "DestId": 0
+    }
+  ]
+}

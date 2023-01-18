@@ -1,0 +1,115 @@
+{
+  "LogicalInstances": [
+    {
+      "Name": "MC",
+      "IsMaster": false,
+      "CompType": "DDRC",
+      "Protocol": "AXI_MM",
+      "Ports": [
+        "PORT0"
+      ],
+      "SysAddresses": [
+        {
+          "Base": "0x0",
+          "Size": "0x80000000"
+        }
+      ]
+    },
+    {
+      "Name": "PS_AIE_Config_Master",
+      "IsMaster": true,
+      "CompType": "PS_NCI_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "PS_AIE_Config_Slave",
+      "IsMaster": false,
+      "CompType": "AIE_NSU",
+      "Protocol": "AXI_MM",
+      "SysAddresses": [
+        {
+          "Base": "0x20000000000",
+          "Size": "0x40000000"
+        }
+      ]
+    },
+    {
+      "Name": "PS_PL_RTP_Slave",
+      "IsMaster": false,
+      "CompType": "PL_NSU",
+      "Protocol": "AXI_MM",
+      "SysAddresses": [
+        {
+          "Base": "0x20100000000",
+          "Size": "0x40000000"
+        }
+      ]
+    },
+    {
+      "Name": "S00_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    }
+  ],
+  "Paths": [
+    {
+      "Phase": 0,
+      "From": "S00_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2000,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2000,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "To": "PS_AIE_Config_Slave",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 1,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 1,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 1,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 1,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "To": "PS_PL_RTP_Slave",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 1,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 1,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    }
+  ]
+}

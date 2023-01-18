@@ -1,0 +1,12 @@
+#Master
+PS_AIE_Config_Master PS_NCI_NMU Unassigned AXI_MM
+S00_AXI AIE_NMU Unassigned AXI_MM
+#Slave
+MC DDRC Unassigned AXI_MM PORT0
+PS_AIE_Config_Slave AIE_NSU Unassigned AXI_MM 
+PS_PL_RTP_Slave PL_NSU Unassigned AXI_MM 
+#Traffic
+0 S00_AXI MC PORT0 MM_ReadWrite BE 100 2000 BE 100 2000
+0 PS_AIE_Config_Master PS_AIE_Config_Slave PORT0 MM_ReadWrite BE 100 1 BE 100 1
+0 PS_AIE_Config_Master MC PORT0 MM_ReadWrite BE 100 1 BE 100 1
+0 PS_AIE_Config_Master PS_PL_RTP_Slave PORT0 MM_ReadWrite BE 100 1 BE 100 1

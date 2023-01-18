@@ -12,6 +12,16 @@ all: tutorial-3.exe
 tutorial-3.exe: aie.mlir test.cpp
 	aiecc.py -j4 --sysroot=${SYSROOT} --host-target=aarch64-linux-gnu ./aie.mlir -I../../runtime_lib ../../runtime_lib/test_library.cpp ./test.cpp -o $@
 
+Work/ps/c_rts/systemC/generated-objects/ps_i6.so: test.cpp aie.mlir
+	make -C Work/ps/c_rts/systemC link
+#	cd ./Work/ps/c_rts/systemC
+#	make link
+#	cd ../../../..
+
+sim: Work/ps/c_rts/systemC/generated-objects/ps_i6.so
+	aiesimulator --pkg-dir=./Work --dump-vcd foo
+
+
 clean:
 	rm -rf acdc_project *elf *exe core*
 
