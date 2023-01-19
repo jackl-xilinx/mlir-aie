@@ -12,6 +12,15 @@ all: tutorial-4.exe
 tutorial-4.exe: test.cpp aie.mlir
 	aiecc.py -j4 --sysroot=${SYSROOT} --host-target=aarch64-linux-gnu $(word 2,$^) -I../../../runtime_lib ../../../runtime_lib/test_library.cpp ./$< -o $@
 
+Work/ps/c_rts/systemC/generated-objects/ps_i96.so: test.cpp aie.mlir
+	make -C Work/ps/c_rts/systemC link
+#	cd ./Work/ps/c_rts/systemC
+#	make link
+#	cd ../../../..
+
+sim: Work/ps/c_rts/systemC/generated-objects/ps_i96.so
+	aiesimulator --pkg-dir=./Work --dump-vcd foo
+
 view: routes.json
 	../../scripts/visualize.py $<
 routes.json: aie.mlir

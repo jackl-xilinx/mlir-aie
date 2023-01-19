@@ -1,0 +1,445 @@
+{
+  "LogicalInstances": [
+    {
+      "Name": "MC",
+      "IsMaster": false,
+      "CompType": "DDRC",
+      "Protocol": "AXI_MM",
+      "Ports": [
+        "PORT0"
+      ],
+      "SysAddresses": [
+        {
+          "Base": "0x0",
+          "Size": "0x80000000"
+        }
+      ]
+    },
+    {
+      "Name": "PS_AIE_Config_Master",
+      "IsMaster": true,
+      "CompType": "PS_NCI_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "PS_AIE_Config_Slave",
+      "IsMaster": false,
+      "CompType": "AIE_NSU",
+      "Protocol": "AXI_MM",
+      "SysAddresses": [
+        {
+          "Base": "0x20000000000",
+          "Size": "0x40000000"
+        }
+      ]
+    },
+    {
+      "Name": "PS_PL_RTP_Slave",
+      "IsMaster": false,
+      "CompType": "PL_NSU",
+      "Protocol": "AXI_MM",
+      "SysAddresses": [
+        {
+          "Base": "0x20100000000",
+          "Size": "0x40000000"
+        }
+      ]
+    },
+    {
+      "Name": "S00_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S01_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S02_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S03_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S04_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S05_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S06_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S07_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S08_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S09_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S10_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S11_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S12_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S13_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S14_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    },
+    {
+      "Name": "S15_AXI",
+      "IsMaster": true,
+      "CompType": "AIE_NMU",
+      "Protocol": "AXI_MM",
+      "ReadTC": "BE",
+      "WriteTC": "BE",
+      "SysAddresses": []
+    }
+  ],
+  "Paths": [
+    {
+      "Phase": 0,
+      "From": "S02_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S04_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S03_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S10_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S15_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S14_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S08_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S06_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S05_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S00_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S11_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S09_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S13_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S07_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S01_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "S12_AXI",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 2,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 2,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "To": "PS_AIE_Config_Slave",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 1,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 1,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "To": "MC",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 1,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 1,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    },
+    {
+      "Phase": 0,
+      "From": "PS_AIE_Config_Master",
+      "To": "PS_PL_RTP_Slave",
+      "Port": "PORT0",
+      "CommType": "MM_ReadWrite",
+      "ReadBW": 1,
+      "ReadLatency": 100,
+      "ReadAvgBurst": 4,
+      "WriteBW": 1,
+      "WriteLatency": 100,
+      "WriteAvgBurst": 4
+    }
+  ]
+}
