@@ -1,0 +1,138 @@
+{
+  "Placement": [
+    {
+      "LogicalInstance": "PS_AIE_Config_Slave",
+      "PhysicalInstance": [
+        "NOC_NSU128_X1Y6",
+        "NOC_NSU128_X2Y6",
+        "NOC_NSU128_X3Y6",
+        "NOC_NSU128_X4Y6",
+        "NOC_NSU128_X5Y6",
+        "NOC_NSU128_X6Y6",
+        "NOC_NSU128_X7Y6",
+        "NOC_NSU128_X8Y6",
+        "NOC_NSU128_X9Y6",
+        "NOC_NSU128_X10Y6",
+        "NOC_NSU128_X11Y6",
+        "NOC_NSU128_X12Y6",
+        "NOC_NSU128_X13Y6",
+        "NOC_NSU128_X14Y6",
+        "NOC_NSU128_X15Y6",
+        "NOC_NSU128_X16Y6"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S02_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X1Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S13_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X13Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S06_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X8Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S01_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X15Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S10_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X4Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S00_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X10Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S15_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X5Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S09_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X12Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S14_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X6Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S08_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X7Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S12_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X16Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S05_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X9Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S03_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X3Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S07_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X14Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S04_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X2Y10"
+      ],
+      "IsSoft": false
+    },
+    {
+      "LogicalInstance": "S11_AXI",
+      "PhysicalInstance": [
+        "NOC_NMU128_X11Y10"
+      ],
+      "IsSoft": false
+    }
+  ]
+}

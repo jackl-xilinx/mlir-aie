@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<POWERDATA data="AI-Engine Compiler" dataVersion="2022.2" design="graph" date="Mon Jan  9 14:31:42 2023
+">
+ <DEVICE part="xcvc1902" grade="extended" package="vsva2197" speed="-2MP" process="typical" vid="No"></DEVICE>
+  <AIE status="COMPILER_OUTPUT">
+    <AIE_MODULE name="graph" num_tiles="130" clk_freq="1250">
+      <TILE name="CR(3,3)" type="int16" int_core_load="0.54" fp_core_load="0" mem_banks="7" mem_rw_rate="0.2" stream_util="0.18" coordinates="3,4">
+        <KERNEL name="i0"  int_core_load="0.9" fp_core_load="0"></KERNEL>
+      </TILE>
+
+      <TILE name="CR(6,0)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="6,1">
+      </TILE>
+      <TILE name="CR(4,1)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="4,2">
+      </TILE>
+      <TILE name="CR(5,1)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="5,2">
+      </TILE>
+      <TILE name="CR(6,1)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="6,2">
+      </TILE>
+      <TILE name="CR(4,2)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="4,3">
+      </TILE>
+      <TILE name="CR(4,3)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="4,4">
+      </TILE>
+      <TILE name="CR(5,0)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="5,1">
+      </TILE>
+      <TILE name="CR(3,2)" type="none" int_core_load="0" fp_core_load="0" mem_banks="4" mem_rw_rate="0.2" stream_util="0" coordinates="3,3">
+      </TILE>
+
+      <SHIM name="SHIM(6, 0)" type="AIE_PL_NOC_SHIM" stream_util="0.16" num_pl_streams="0" num_aximm_connections="1" coordinates="2,0"></SHIM>
+      <SHIM name="SHIM(7, 0)" type="AIE_PL_NOC_SHIM" stream_util="0.16" num_pl_streams="0" num_aximm_connections="1" coordinates="3,0"></SHIM>
+
+    </AIE_MODULE>
+  </AIE>
+</POWERDATA>

@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <sys/mman.h>
 
+
 extern "C" {
 extern aie_libxaie_ctx_t *ctx /* = nullptr*/;
 }
@@ -963,25 +964,59 @@ void mlir_aie_clear_shim_config(aie_libxaie_ctx_t *ctx, int col, int row) {
 }
 
 void mlir_aie_init_mems(aie_libxaie_ctx_t *ctx, int numBufs) {
+#if defined(__AIESIM__)
+  // ctx->buffers = (adf::MemoryInfo **)malloc(numBufs * sizeof(adf::MemoryInfo *));
+  // aiesim_WriteGM(10, &numBufs, 1);
+  // ctx->buffers = (ExtMemModel **)malloc(numBufs * sizeof(ExtMemModel *));
+  ctx->buffers = (ext_mem_model_t **)malloc(numBufs * sizeof(ext_mem_model_t *));
+#else
   ctx->buffers = (XAie_MemInst **)malloc(numBufs * sizeof(XAie_MemInst *));
+#endif
 }
 
 int *mlir_aie_mem_alloc(aie_libxaie_ctx_t *ctx, int bufIdx, int size) {
-  //  ctx->InBuffers = (XAie_MemInst**)malloc(sizeof(XAie_MemInst*));
-  //  XAie_MemInst *IN;
+#if defined(__AIESIM__)
+  ctx->buffers[bufIdx] = new ext_mem_model_t;
+  (ctx->buffers[bufIdx])->virtualAddr = std::malloc(size*sizeof(int));
+  if((ctx->buffers[bufIdx])->virtualAddr) {
+    (ctx->buffers[bufIdx])->size = size;
+    //assign physical space in SystemC DDR memory controller
+    (ctx->buffers[bufIdx])->physicalAddr = nextAlignedAddr;
+    //adjust nextAlignedAddr to the next 128-bit aligned address
+    nextAlignedAddr = nextAlignedAddr + size;
+    uint64_t gapToAligned = nextAlignedAddr % 16; //16byte (128bit)
+    if (gapToAligned > 0)
+        nextAlignedAddr += (16 - gapToAligned);
+  } else {
+    printf("ExtMemModel: Failed to allocate %d memory.\n",size);
+  }
+
+  std::cout << "ExtMemModel constructor: virutal address " << std::hex << (ctx->buffers[bufIdx])->virtualAddr << ", physical address " << (ctx->buffers[bufIdx])->physicalAddr << ", size " << std::dec << (ctx->buffers[bufIdx])->size << std::endl;
+
+  return (ctx->buffers[bufIdx])->virtualAddr;
+#else
   ctx->buffers[bufIdx] =
       XAie_MemAllocate(&(ctx->DevInst), size * sizeof(int), XAIE_MEM_CACHEABLE);
   int *mem_ptr = (int *)XAie_MemGetVAddr(ctx->buffers[bufIdx]);
   XAie_MemSyncForCPU(ctx->buffers[bufIdx]);
   return mem_ptr;
+#endif
 }
 
 void mlir_aie_sync_mem_cpu(aie_libxaie_ctx_t *ctx, int bufIdx) {
+#if defined(__AIESIM__)
+  aiesim_ReadGM((ctx->buffers[bufIdx])->physicalAddr, (ctx->buffers[bufIdx])->virtualAddr, (ctx->buffers[bufIdx])->size);
+#else
   XAie_MemSyncForCPU(ctx->buffers[bufIdx]);
+#endif
 }
 
 void mlir_aie_sync_mem_dev(aie_libxaie_ctx_t *ctx, int bufIdx) {
+#if defined(__AIESIM__)
+  aiesim_WriteGM((ctx->buffers[bufIdx])->physicalAddr, (ctx->buffers[bufIdx])->virtualAddr, (ctx->buffers[bufIdx])->size);
+#else
   XAie_MemSyncForDev(ctx->buffers[bufIdx]);
+#endif
 }
 
 #endif
@@ -991,6 +1026,8 @@ void mlir_aie_sync_mem_dev(aie_libxaie_ctx_t *ctx, int bufIdx) {
  * COMMON
  ******************************************************************************
  */
+
+
 
 void computeStats(u32 performance_counter[], int n) {
   u32 total_0 = 0;

@@ -42,7 +42,13 @@ main(int argc, char *argv[])
     // mlir_aie_configure_dmas - TileDMAs not used in this example.
     // mlir_aie_initialize_locks - Locks not used in this example.
     aie_libxaie_ctx_t *_xaie = mlir_aie_init_libxaie();
-    mlir_aie_init_device(_xaie);                        
+    mlir_aie_init_device(_xaie);            
+
+    #if defined(__AIESIM__) && !defined(__CDO__)
+      printf("Turning ecc off\n");
+      XAie_TurnEccOff(&(_xaie->DevInst));
+    #endif
+
     mlir_aie_configure_cores(_xaie);
     mlir_aie_configure_switchboxes(_xaie);
     mlir_aie_configure_dmas(_xaie);
@@ -56,15 +62,22 @@ main(int argc, char *argv[])
     // Allocate buffer and return virtual pointer to memory
     int *mem_ptr_in  = mlir_aie_mem_alloc(_xaie, 0, 256);
     int *mem_ptr_out = mlir_aie_mem_alloc(_xaie, 1, 256);
+    // int *mem_ptr_in = (int*)malloc(256*sizeof(int));
+    // int *mem_ptr_out = (int*)malloc(256*sizeof(int));
 
     // Set virtual pointer used to configure 
+#if defined(__AIESIM__)    
+    mlir_aie_external_set_addr_ddr_test_buffer_in((u64)((_xaie->buffers[0])->physicalAddr));
+    mlir_aie_external_set_addr_ddr_test_buffer_out((u64)((_xaie->buffers[1])->physicalAddr));
+#else
     mlir_aie_external_set_addr_ddr_test_buffer_in((u64)mem_ptr_in);
     mlir_aie_external_set_addr_ddr_test_buffer_out((u64)mem_ptr_out);
+#endif
     mlir_aie_configure_shimdma_70(_xaie);
     mem_ptr_in[3] = 14;
 
     mlir_aie_sync_mem_dev(_xaie, 0);
-    mlir_aie_configure_shimdma_70(_xaie);
+    // mlir_aie_configure_shimdma_70(_xaie);
 
     int errors = 0;
 
@@ -84,17 +97,48 @@ main(int argc, char *argv[])
     mlir_aie_check("Before start cores:", mlir_aie_read_buffer_a34(_xaie, 5), 0,
                    errors);
 
+    printf("\ntile(3,4) status\n");
+    mlir_aie_print_tile_status(_xaie, 3, 4);
+
+    printf("\ntile(7,0) status\n");
+    mlir_aie_print_shimdma_status(_xaie, 7, 0);
+
+    mlir_aie_acquire_ddr_test_buffer_in_lock(_xaie, 0, 0);
+    mlir_aie_acquire_ddr_test_buffer_out_lock(_xaie, 0, 0);
+
     // Helper function to enable all AIE cores
     printf("Start cores\n");
     mlir_aie_start_cores(_xaie);
 
+    printf("\ntile(3,4) status\n");
+    mlir_aie_print_tile_status(_xaie, 3, 4);
+
+    printf("\ntile(7,0) status\n");
+    mlir_aie_print_shimdma_status(_xaie, 7, 0);
+
+    printf("Release ddr input/output locks(1) to enable them\n");
     mlir_aie_release_ddr_test_buffer_in_lock(_xaie, 1, 0);
     mlir_aie_release_ddr_test_buffer_out_lock(_xaie, 1, 0);
+
+    printf("\ntile(7,0) status\n");
+    mlir_aie_print_shimdma_status(_xaie, 7, 0);
 
     // Wait time for cores to run. Number used here is much larger than needed.
     usleep(100);
 
-    mlir_aie_release_ddr_test_buffer_out_lock(_xaie, 0, 0);
+    int timeout = 1000; // ~1 sec in aiesim
+    if(mlir_aie_acquire_ddr_test_buffer_out_lock(_xaie, 0, timeout) == XAIE_OK)
+      printf("Acquired ddr output lock(0). Output shim dma done.\n");
+    else
+      printf("Timed out (%d) while trying to acquire ddr output lock (0).\n", timeout);
+
+    printf("\ntile(3,4) status\n");
+    mlir_aie_print_tile_status(_xaie, 3, 4);
+
+    printf("\ntile(7,0) status\n");
+    mlir_aie_print_shimdma_status(_xaie, 7, 0);
+
+    // mlir_aie_release_ddr_test_buffer_out_lock(_xaie, 0, 0);
     mlir_aie_sync_mem_cpu(_xaie, 1); // Sync output buffer back to DDR/cache
 
     // Check buffer at index 3 again for expected value of 14 for tile(3,4)
