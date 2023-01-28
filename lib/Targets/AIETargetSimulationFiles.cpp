@@ -35,8 +35,70 @@ mlir::LogicalResult AIETranslateSCSimConfig(mlir::ModuleOp module, llvm::raw_ost
  output << "scsim.config" <<"\n";
  return mlir::success();
 }
+
 mlir::LogicalResult AIETranslateShimSolution(mlir::ModuleOp module, llvm::raw_ostream & output){
-    output << "shimsolution" <<"\n";
+    /* Generates a aieshim_solution.aiesol file which is necessary to run aiesim.
+    Sample invocation:
+    aie-translate --aie-mlir-to-shim-solution ./aie.mlir > ./Work/arch/aieshim_solution.aiesol
+
+    NOTE: to correctly enable all tiles used for routing, the aie-opt routing pass must be called first.
+    So, a more practical invocation:
+    aie-opt --aie-create-pathfinder-flows ./aie.mlir | aie-translate --aie-mlir-to-shim > ./Work/arch/aieshim_solution.aiesol
+    */
+
+   // Generate boilerplate header
+    output << "{\n";
+    output << "  \"Placement\": [\n";
+
+
+    int shim_MM2S_count = 0;
+    int shim_S2MM_count = 0;
+
+    // For each DMAStartOp in shims, generate a "LogicalInstance" section
+    for(ShimDMAOp shimOp : module.getOps<ShimDMAOp>()) {
+        for(DMAStartOp startOp : shimOp.getOps<DMAStartOp>()) {
+            // For aiesimulator to run, PortName must start at 00 and increase
+            std::string port_name = "";
+            std::string M_or_S;
+            if(startOp.getChannelDir() == DMAChannelDir::MM2S) {
+                M_or_S = "M";
+                port_name.append(M_or_S);
+                port_name.append(shim_MM2S_count < 10 ? "0" : ""); // padding zero 
+                port_name.append(std::to_string(shim_MM2S_count++));
+                port_name.append("_AXI");
+            } else if(startOp.getChannelDir() == DMAChannelDir::S2MM) {
+                M_or_S = "S";
+                port_name.append(M_or_S);
+                port_name.append(shim_S2MM_count < 10 ? "0" : ""); // padding zero 
+                port_name.append(std::to_string(shim_S2MM_count++));
+                port_name.append("_AXI");
+            }
+            // TODO: How to tell if PortName should be AXI or AXIS?
+
+
+            // Generate a Logical Instance line
+            output << "    {\n" <<
+            "      \"LogicalInstance\" : { \"InstanceName\" : " <<
+            "\"aie_engine_0\", \"PortName\" : \"" << port_name << "\"},\n";
+
+            std::string col = std::to_string(shimOp.colIndex());
+            int ch = startOp.getChannelIndex();
+            std::string channel = std::to_string(ch);
+            // "name" field appears to be arbitrary, but we try to be descriptive
+            std::string physical_name = "";
+            physical_name.append("AIE_NOC_X").append(col).append("Y0_AIE_NOC_");
+            physical_name.append(M_or_S).append("_AXI_ch").append(channel);
+
+            // Generate a Physical Instance line
+            output << "      \"PhysicalInstance\" : [{ \"name\" : \"" << physical_name
+                   << "\", \"column\" : " << col << ", \"channel\" : " << channel << " }],\n"
+                   << "      \"IsSoft\" : true\n    },\n";
+        }
+    }
+
+    output << "  ]\n";
+    output << "}\n";
+
  return mlir::success();
 }
 
