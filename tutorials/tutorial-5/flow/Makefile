@@ -14,14 +14,19 @@ tutorial-5.exe: aie.mlir test.cpp
 
 Work/ps/c_rts/systemC/generated-objects/ps_i96.so: test.cpp aie.mlir
 	make -C Work/ps/c_rts/systemC link
-#	cd ./Work/ps/c_rts/systemC
-#	make link
-#	cd ../../../..
 
-sim: Work/ps/c_rts/systemC/generated-objects/ps_i96.so
+Work/arch/aieshim_solution.aiesol:
+	make -C Work/arch aieshim_solution.aiesol
+
+Work/reports/graph.xpe:
+	make -C Work/reports graph.xpe
+
+
+sim: Work/ps/c_rts/systemC/generated-objects/ps_i96.so Work/arch/aieshim_solution.aiesol Work/reports/graph.xpe
 	aiesimulator --pkg-dir=./Work --dump-vcd foo
 
 view: routes.json
+	../../scripts/visualize.py $<
 
 routes.json: aie.mlir
 	aie-opt --aie-create-pathfinder-flows --aie-find-flows $< | aie-translate --aie-flows-to-json > $@

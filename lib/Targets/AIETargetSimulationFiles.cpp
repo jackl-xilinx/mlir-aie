@@ -52,51 +52,45 @@ mlir::LogicalResult AIETranslateShimSolution(mlir::ModuleOp module, llvm::raw_os
 
 
     int shim_MM2S_count = 0;
-    int shim_S2MM_count = 0;
 
     // For each DMAStartOp in shims, generate a "LogicalInstance" section
-    for(ShimDMAOp shimOp : module.getOps<ShimDMAOp>()) {
+    auto all_shim_ops = module.getOps<ShimDMAOp>();
+    for(ShimDMAOp shimOp : all_shim_ops) {
         for(DMAStartOp startOp : shimOp.getOps<DMAStartOp>()) {
             // For aiesimulator to run, PortName must start at 00 and increase
-            std::string port_name = "";
-            std::string M_or_S;
             if(startOp.getChannelDir() == DMAChannelDir::MM2S) {
-                M_or_S = "M";
-                port_name.append(M_or_S);
+                if(shim_MM2S_count > 0)
+                    output << ",\n";
+
+                std::string port_name = "";
+                port_name.append("M");
                 port_name.append(shim_MM2S_count < 10 ? "0" : ""); // padding zero 
                 port_name.append(std::to_string(shim_MM2S_count++));
                 port_name.append("_AXI");
-            } else if(startOp.getChannelDir() == DMAChannelDir::S2MM) {
-                M_or_S = "S";
-                port_name.append(M_or_S);
-                port_name.append(shim_S2MM_count < 10 ? "0" : ""); // padding zero 
-                port_name.append(std::to_string(shim_S2MM_count++));
-                port_name.append("_AXI");
-            }
             // TODO: How to tell if PortName should be AXI or AXIS?
 
+                // Generate a Logical Instance line
+                output << "    {\n" <<
+                "      \"LogicalInstance\" : { \"InstanceName\" : " <<
+                "\"aie_engine_0\", \"PortName\" : \"" << port_name << "\"},\n";
 
-            // Generate a Logical Instance line
-            output << "    {\n" <<
-            "      \"LogicalInstance\" : { \"InstanceName\" : " <<
-            "\"aie_engine_0\", \"PortName\" : \"" << port_name << "\"},\n";
+                std::string col = std::to_string(shimOp.colIndex());
+                int ch = startOp.getChannelIndex();
+                std::string channel = std::to_string(ch);
+                // "name" field appears to be arbitrary, but we try to be descriptive
+                std::string physical_name = "";
+                physical_name.append("AIE_NOC_X").append(col).append("Y0_AIE_NOC_");
+                physical_name.append("M_AXI_ch").append(channel);
 
-            std::string col = std::to_string(shimOp.colIndex());
-            int ch = startOp.getChannelIndex();
-            std::string channel = std::to_string(ch);
-            // "name" field appears to be arbitrary, but we try to be descriptive
-            std::string physical_name = "";
-            physical_name.append("AIE_NOC_X").append(col).append("Y0_AIE_NOC_");
-            physical_name.append(M_or_S).append("_AXI_ch").append(channel);
-
-            // Generate a Physical Instance line
-            output << "      \"PhysicalInstance\" : [{ \"name\" : \"" << physical_name
-                   << "\", \"column\" : " << col << ", \"channel\" : " << channel << " }],\n"
-                   << "      \"IsSoft\" : true\n    },\n";
+                // Generate a Physical Instance line
+                output << "      \"PhysicalInstance\" : [{ \"name\" : \"" << physical_name
+                    << "\", \"column\" : " << col << ", \"channel\" : " << channel << " }],\n"
+                    << "      \"IsSoft\" : true\n    }";
+            } 
         }
     }
 
-    output << "  ]\n";
+    output << "\n  ]\n";
     output << "}\n";
 
  return mlir::success();
