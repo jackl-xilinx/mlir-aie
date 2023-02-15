@@ -7,7 +7,13 @@
 -zero-offset : Zero offset for indicating the location of zeroes in convolution filter (useful for 16x16 scheme)
 -dup-factor  : Duplication factor for each value in convolution filter (useful for 8x8 scheme)
 ```
-### `-convert-vector-to-aievec`: Convert arithmetic and vector operations to AIE vector ops
+### `-canonicalize-for-aievec`: Transform common vector ops into a subset of vector ops with standard vector ops closer to AIEVec semantics.
+
+#### Options
+```
+-aie-target : Select AIE version: \"aie\" or \"aieml\". This will determine the vector size and available operations.
+```
+### `-lower-vector-to-aievec`: Convert standard Vector dialect operations to equivalent AIE vector ops
 
 #### Options
 ```
