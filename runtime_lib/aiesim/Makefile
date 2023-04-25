@@ -45,6 +45,7 @@ ps/ps.so: ps/genwrapper_for_ps.o ps/test.o ps/test_library.o $(eval PATH:=$(XILI
 
 link: ps/ps.so
 
+# test comment
 sim: ps/ps.so
 	cd ..; aiesimulator --pkg-dir=./sim --dump-vcd foo
 
