@@ -54,6 +54,8 @@ def my_matmul():
     m_x_n_cores_x_N_in_i32s_out = m * n_cores * N_in_i32s_out
 
     vectorized = True
+    enable_tracing = True
+    trace_size = 8192
 
     with mlir_mod_ctx() as ctx:
 
@@ -90,6 +92,15 @@ def my_matmul():
             inB_fifos = {}
             outC_fifo_names = ["memC0", "memC1", "memC2", "memC3"]
             outC_fifos = {}
+            outC_fifos_dummy = {}
+
+            # Set up a circuit-switched flow from core to shim for tracing information
+            if enable_tracing:
+                packetflow(1, ComputeTile2, WireBundle.Trace, 0, ShimTile, WireBundle.DMA, 1)
+                packetflow(2, ComputeTile3, WireBundle.Trace, 0, ShimTile, WireBundle.DMA, 1)
+                packetflow(3, ComputeTile4, WireBundle.Trace, 0, ShimTile, WireBundle.DMA, 1)
+                packetflow(4, ComputeTile5, WireBundle.Trace, 0, ShimTile, WireBundle.DMA, 1)
+                # flow(ShimTile, WireBundle.Trace, 0, ShimTile, WireBundle.DMA, 1)
 
             # AIE-array data movement with object fifos
             # Input A
@@ -128,10 +139,17 @@ def my_matmul():
             object_fifo_link(inB, [inB_fifo_names[0]])
 
             # Output C
-            for i in range(n_cores):
+            # for i in range(n_cores):
+            for i in range(3):
                 outC_fifos[outC_fifo_names[i]] = object_fifo(
                     outC_fifo_names[i], cores[i], MemTile, 2, memRef_C_ty
                 )
+            outC_fifos_dummy["memC3_dummy"] = object_fifo(
+                "memC3_dummy", cores[3], cores[3], 2, memRef_C_ty
+            )
+            outC_fifos[outC_fifo_names[3]] = object_fifo(
+                outC_fifo_names[3], MemTile, MemTile, 2, memRef_C_ty
+            )
             outC = object_fifo(
                 "outC",
                 MemTile,
@@ -145,10 +163,14 @@ def my_matmul():
                     (t, 1),
                 ],
             )
+
+
             object_fifo_link(outC_fifo_names[0:n_cores], outC)
+            # object_fifo_link(outC_fifo_names[0:2], outC)
 
             # Set up compute tiles
-            for i in range(n_cores):
+            # for i in range(n_cores):
+            for i in range(3):
                 # Compute tile i
                 @core(cores[i], "mm.o")
                 def core_body():
@@ -180,6 +202,37 @@ def my_matmul():
                             )
                             yield_([])
                         yield_([])
+
+            @core(cores[3], "mm.o")
+            def core_body():
+                for _ in for_(0xFFFFFFFF):
+                    for _ in for_(tiles):
+                        elem_out = outC_fifos_dummy["memC3_dummy"].acquire(
+                            ObjectFifoPort.Produce, 1
+                        )
+                        call(zero, [elem_out])
+
+                        for _ in for_(K_div_k):
+                            elem_in_a = inA_fifos[inA_fifo_names[3]].acquire(
+                                ObjectFifoPort.Consume, 1
+                            )
+                            elem_in_b = inB_fifos[inB_fifo_names[0]].acquire(
+                                ObjectFifoPort.Consume, 1
+                            )
+                            call(matmul, [elem_in_a, elem_in_b, elem_out])
+                            inA_fifos[inA_fifo_names[3]].release(
+                                ObjectFifoPort.Consume, 1
+                            )
+                            inB_fifos[inB_fifo_names[0]].release(
+                                ObjectFifoPort.Consume, 1
+                            )
+                            yield_([])
+
+                        outC_fifos_dummy["memC3_dummy"].release(
+                            ObjectFifoPort.Produce, 1
+                        )
+                        yield_([])
+                    yield_([])
 
             # To/from AIE-array data movement
 

@@ -25,7 +25,7 @@ def my_matmul():
     word_size_out = 2
 
     vectorized = True
-    enable_tracing = False
+    enable_tracing = True
     trace_size = 16384
 
     A_sz_in_i32s = M * K * word_size_in // 4
@@ -135,7 +135,8 @@ def my_matmul():
 
             # Set up a circuit-switched flow from core to shim for tracing information
             if enable_tracing:
-                flow(compute_tile2, WireBundle.Trace, 0, shim_tile, WireBundle.DMA, 1)
+                # flow(compute_tile2, WireBundle.Trace, 0, shim_tile, WireBundle.DMA, 1)
+                flow(shim_tile, WireBundle.Trace, 0, shim_tile, WireBundle.DMA, 1)
 
             # Set up compute tiles
 
