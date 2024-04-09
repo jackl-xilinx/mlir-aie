@@ -77,7 +77,7 @@ sign: ${xclbin_target}
 .PHONY: run
 run: ${targetname}.exe ${xclbin_target} ${insts_target} #sign
 	export XRT_HACK_UNSECURE_LOADING_XCLBIN=1 && \
-	${powershell} ./$< -x ${xclbin_target} -i ${insts_target} -k MLIR_AIE -M $M -K $K -N $N ${runargs}
+	${powershell} ./$< -x ${xclbin_target} -i ${insts_target} -k MLIR_AIE -M $M -K $K -N $N ${runargs} -t 32768
 
 .PHONY: clean
 clean:

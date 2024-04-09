@@ -71,7 +71,7 @@ def my_matmul(M=512, K=512, N=512):
     n_x_n_cols_in_i32s_out = n_in_i32s_out * n_cols
 
     vectorized = True
-    enable_tracing = True 
+    enable_tracing = True
     # trace_size = 16384 // 4
     trace_size = 32768 // n_cols
     # trace_size = 8192
@@ -278,9 +278,10 @@ def my_matmul(M=512, K=512, N=512):
                 #flow(trace_tile, WireBundle.Trace, 0, trace_shim, WireBundle.DMA, 1)
                 #  pktflow0 = packetflow(0, _0_ComputeTile2, WireBundle.Trace, 0, trace_shim, WireBundle.DMA, 1)
                 #  pktflow0.keep_pkt_headerJ = True
-                #packetflow(1, _1_ComputeTile2, WireBundle.Trace, 0, trace_shim, WireBundle.DMA, 1)
-                #packetflow(2, _2_ComputeTile2, WireBundle.Trace, 0, trace_shim, WireBundle.DMA, 1)
-                #packetflow(3, _3_ComputeTile2, WireBundle.Trace, 0, trace_shim, WireBundle.DMA, 1)
+                #packetflow(0, _0_ComputeTile2, WireBundle.Trace, 0, _0_ShimTile, WireBundle.DMA, 1, keep_pkt_header=1)
+                #packetflow(1, _1_ComputeTile2, WireBundle.Trace, 0, _1_ShimTile, WireBundle.DMA, 1, keep_pkt_header=1)
+                #packetflow(2, _2_ComputeTile2, WireBundle.Trace, 0, _2_ShimTile, WireBundle.DMA, 1, keep_pkt_header=1)
+                #packetflow(3, _3_ComputeTile2, WireBundle.Trace, 0, _3_ShimTile, WireBundle.DMA, 1, keep_pkt_header=1)
                 flow(_0_ComputeTile2, WireBundle.Trace, 0, _0_ShimTile, WireBundle.DMA, 1)
                 flow(_1_ComputeTile2, WireBundle.Trace, 0, _1_ShimTile, WireBundle.DMA, 1)
                 flow(_2_ComputeTile2, WireBundle.Trace, 0, _2_ShimTile, WireBundle.DMA, 1)

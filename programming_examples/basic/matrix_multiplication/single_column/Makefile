@@ -16,4 +16,5 @@ M=256
 K=128
 N=128
 
-include ../makefile-common
+#include ../makefile-common
+include ./makefile-common

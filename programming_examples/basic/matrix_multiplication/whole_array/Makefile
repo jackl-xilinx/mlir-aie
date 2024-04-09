@@ -14,4 +14,5 @@ M?=512
 K?=512
 N?=512
 
-include ../makefile-common
+#include ../makefile-common
+include ./makefile-common
