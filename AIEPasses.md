@@ -13,11 +13,26 @@ aie.buffer operations without an address.  This pass determines
 updates each aie.buffer operation without an address to have a
 well-defined address.  This enables later passes to have a
 consistent view of the memory map of a system.
+
+#### Options
+```
+-basic-alloc : Flag to enable the basic sequential allocation scheme (not bank-aware).
+```
 ### `-aie-assign-lock-ids`
 
 _Assigns the lockIDs of locks that do not have IDs._
 
 Assigns the lockIDs of locks that do not have IDs.
+### `-aie-assign-tile-controller-ids`
+
+_Assign controller id per aie.tile_op_
+
+For each aie.tile_op used in the design, assign a unique controller ID.
+
+#### Options
+```
+-column-wise-unique-ids : Flag to generate controller ids only unique within each column. Otherwise globally unique.
+```
 ### `-aie-canonicalize-device`
 
 _Canonicalize Designs to include a toplevel device_
@@ -25,18 +40,20 @@ _Canonicalize Designs to include a toplevel device_
 This pass inserts a toplevel device operation in designs that do not have one.
 This allows us to support backwards compatability for older models targetting the VC1902
 device without explicit device operations. 
-### `-aie-create-packet-flows`
-
-_Route aie.packetflow operations through switchboxes_
-
-Replace each aie.packetflow operation with an equivalent set of aie.switchbox and aie.wire
-operations.  
 ### `-aie-create-pathfinder-flows`
 
-_Route aie.flow operations through switchboxes with Pathfinder algorithm_
+_Route aie.flow and aie.packetflow operations through switchboxes_
 
-Replace each aie.flow operation with an equivalent set of aie.switchbox and aie.wire
-operations. Uses Pathfinder congestion-aware algorithm. 
+Uses Pathfinder congestion-aware algorithm. 
+Each aie.flow is replaced with aie.connect operation.
+Each aie.packetflow is replace with the set of aie.amsel, aie.masterset 
+and aie.packet_rules operations.
+
+#### Options
+```
+-route-circuit : Flag to enable aie.flow lowering.
+-route-packet  : Flag to enable aie.packetflow lowering.
+```
 ### `-aie-find-flows`
 
 _Recover flows from switchbox configuration_
@@ -47,6 +64,18 @@ to another.  These flows may be circuit-switched flows (represented
 by aie.flow) or a packet-switched connection (represensted by
 aie.packetflow).  This pass is primarily used for testing automatic
 routing.
+### `-aie-generate-column-control-overlay`
+
+_Spawns streaming interconnect network for column control_
+
+For each column of AIE tiles being employed in the design, spawn a network of control packet
+streaming interconnects which overlay on top of the design.
+
+#### Options
+```
+-route-shim-to-tct       : Flag to generate TCT routing between tile CTRL and shim SOUTH ports. Available options: ['shim-only', 'all-tiles', 'disable'].
+-route-shim-to-tile-ctrl : Flag to generate routing between shim dma DMA and tile CTRL ports, for configuration.
+```
 ### `-aie-localize-locks`
 
 _Convert global locks to a core-relative index_

@@ -61,6 +61,30 @@ Interfaces: `InferTypeOpInterface`
 &laquo;unnamed&raquo; | index
 
 
+### `aie.bd_chain` (::xilinx::AIE::BDChainOp)
+
+_Definition of a Parametrizable Chain of Buffer Descriptors_
+
+This operation allows you to define buffer descriptor chains with parametrizable inputs. 
+This is useful for common patterns such as double buffering (ping-pong) that may look identical but use different input/output buffers and locks.
+Currently, only buffers and locks are parametrizable.
+
+Once defined, an abstract BD chain can be used elsewhere using AIEX ops in the runtime sequence. 
+In the future, abstract BD chains will also be usable elsewhere, inside the static configuration.
+At its usage sites, the abstract BD chain will be concretized with the given input arguments.
+
+Traits: `SkipAccessibilityCheckTrait`
+
+Interfaces: `Symbol`
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>sym_name</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
+</table>
+
+
 ### `aie.buffer` (::xilinx::AIE::BufferOp)
 
 _Declare a buffer_
@@ -92,6 +116,7 @@ Interfaces: `OpAsmOpInterface`, `TileElement`
 <tr><td><code>sym_name</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
 <tr><td><code>address</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 <tr><td><code>initial_value</code></td><td>::mlir::ElementsAttr</td><td>constant vector/tensor attribute</td></tr>
+<tr><td><code>mem_bank</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 </table>
 
 #### Operands:
@@ -225,7 +250,8 @@ Traits: `HasParent<SwitchboxOp, ShimMuxOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>source_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 <tr><td><code>dest_bundle</code></td><td>xilinx::AIE::WireBundleAttr</td><td><details><summary>Bundle of wires</summary>{{% markdown %}}Enum cases:
 * Core (`Core`)
@@ -237,7 +263,8 @@ Traits: `HasParent<SwitchboxOp, ShimMuxOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -370,7 +397,11 @@ Interfaces: `AIETarget`
 * xcvc1902 (`xcvc1902`)
 * xcve2302 (`xcve2302`)
 * xcve2802 (`xcve2802`)
-* ipu (`ipu`){{% /markdown %}}</details></td></tr>
+* npu1 (`npu1`)
+* npu1_1col (`npu1_1col`)
+* npu1_2col (`npu1_2col`)
+* npu1_3col (`npu1_3col`)
+* npu1_4col (`npu1_4col`){{% /markdown %}}</details></td></tr>
 </table>
 
 
@@ -416,13 +447,6 @@ Interfaces: `InferTypeOpInterface`, `OpAsmOpInterface`
 
 _Declare a dma buffer descriptor op_
 
-
-Syntax:
-
-```
-operation ::= `aie.dma_bd` `(` $buffer `:` type($buffer) (`,` $offset^)? (`,` $len^)? (`,` $dimensions^)? `)` attr-dict
-```
-
 This operation describes a buffer descriptor for DMA operations. In particular, it specifies
 what buffer to use, and optionally:
 
@@ -430,6 +454,7 @@ what buffer to use, and optionally:
     2. the transfer length;
     3. the sizes and strides for n-d tensor addressing (described below);
     4. the "bd_id" with which to associate the buffer descriptor (most often left empty).
+    5. the number of zeros to pad before and after every dimension of an n-d tensor (described below);
 
 `offset`, `len`, `size`s and `stride`s are all denominated in element width; e.g., transferring the whole of
 `memref<512xi32>` means `len == 512`, and also while transferring the whole of `memref<512xi16>`, `len == 512`.
@@ -464,13 +489,13 @@ Example:
     aie.dma_bd(<$buf2 : memref<64xi32>, 0, 64)
 ```
 
-## Background/context:
+#### Background/context
 
 A DMA channel in a Memory Module can process one buffer descriptor after another by chaining them.
 There are 16 buffer descriptors per Core memory module and 48 buffer descriptors per Memtile memory module.
 They are shared by four DMA channels (or 12).
 
-## DMA Data Layout Transformations on AIE-ML Devices
+#### DMA Data Layout Transformations on AIE-ML Devices
 
 AIE-ML devices can apply data layout transformations at the buffer
 descriptor level. These transformation are described by strides and sizes in up to three dimensions (four
@@ -515,12 +540,18 @@ for(int i = 0; i < 8 /*size_2*/; i++)
       // access/store element at/to index (i * 16 /*stride_2*/ + j * 1 /*stride_1*/ + k * 2 /*stride_0*/)
 ```
 
-## Important gotcha regarding strides
+#### Important gotcha regarding strides
 
 All strides are expressed in multiples of the element width (just like `len` and `offset`)
 **with the caveat that the inner-most dimension's stride must be 1**.
 
-Traits: `HasParent<MemOp, MemTileDMAOp, ShimDMAOp, DMAOp>`
+## DMA constant padding on AIE-ML Devices
+
+AIE-ML devices can apply constant padding at the buffer descriptor level, described with pairs of padding
+counts before and after a dimension, to all dimensions in the data layout transformations. The padding 
+counts can be supplied to the `dma_bd` through an optional argument, an array of "tuple-like" attributes 
+`bd_pad_layout<const_pad_before, const_pad_after>`, followed by an optional argument `const_val` (default 
+is 0). All counts are expressed in multiples of the element width.
 
 #### Attributes:
 
@@ -529,7 +560,12 @@ Traits: `HasParent<MemOp, MemTileDMAOp, ShimDMAOp, DMAOp>`
 <tr><td><code>offset</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 <tr><td><code>len</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 <tr><td><code>dimensions</code></td><td>::xilinx::AIE::BDDimLayoutArrayAttr</td><td></td></tr>
+<tr><td><code>pad_dimensions</code></td><td>::xilinx::AIE::BDPadLayoutArrayAttr</td><td></td></tr>
+<tr><td><code>pad_value</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 <tr><td><code>bd_id</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+<tr><td><code>packet</code></td><td>::xilinx::AIE::PacketInfoAttr</td><td>
+    Tuple encoding the type and header of a packet;
+  </td></tr>
 <tr><td><code>next_bd_id</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 </table>
 
@@ -755,7 +791,8 @@ Example:
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>source_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 <tr><td><code>dest_bundle</code></td><td>xilinx::AIE::WireBundleAttr</td><td><details><summary>Bundle of wires</summary>{{% markdown %}}Enum cases:
 * Core (`Core`)
@@ -767,7 +804,8 @@ Example:
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -938,8 +976,10 @@ Interfaces: `InferTypeOpInterface`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
+<tr><td><code>keep_pkt_header</code></td><td>::mlir::BoolAttr</td><td>bool attribute</td></tr>
 </table>
 
 #### Operands:
@@ -1083,7 +1123,7 @@ Example:
   }
 ```
 
-Traits: `HasParent<MemOp, MemTileDMAOp, mlir::func::FuncOp, ShimDMAOp>`, `Terminator`
+Traits: `Terminator`
 
 #### Successors:
 
@@ -1150,7 +1190,7 @@ This operation creates an `objectFifo` between `%tile12`, `%tile13` and `%tile23
 at each tile are respectively 2, 3 and 4 for tiles `%tile12`, `%tile13` and `%tile23`. This overrides the depth analysis
 specified in the first example.
 
-## Data Layout Transformations on AIE-ML devices
+#### Data Layout Transformations on AIE-ML devices
 
 On AIE-ML devices, objectFifos can also apply data layout transformations by
 using the DMAs n-dimensional address generation scheme. Two transformations
@@ -1198,6 +1238,10 @@ Interfaces: `Symbol`
 <tr><td><code>elemType</code></td><td>::mlir::TypeAttr</td><td>type attribute of AIE objectFifo type</td></tr>
 <tr><td><code>dimensionsToStream</code></td><td>::xilinx::AIE::BDDimLayoutArrayAttr</td><td></td></tr>
 <tr><td><code>dimensionsFromStreamPerConsumer</code></td><td>::xilinx::AIE::BDDimLayoutArrayArrayAttr</td><td></td></tr>
+<tr><td><code>via_DMA</code></td><td>::mlir::BoolAttr</td><td>bool attribute</td></tr>
+<tr><td><code>plio</code></td><td>::mlir::BoolAttr</td><td>bool attribute</td></tr>
+<tr><td><code>via_shared_mem</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+<tr><td><code>memtile_repeat</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 </table>
 
 #### Operands:
@@ -1264,29 +1308,28 @@ _Links two objectFifos through an intermediary tile's DMA_
 Syntax:
 
 ```
-operation ::= `aie.objectfifo.link` $fifoIns `->` $fifoOuts `(` `)` attr-dict
+operation ::= `aie.objectfifo.link` $fifoIns `->` $fifoOuts `(` $src_offsets $dst_offsets `)` attr-dict
 ```
 
-The `aie.objectFifo.link` operation allows to mark two `objectFifos` as linked. This implies that the two `objectFifos` form
+The `aie.objectFifo.link` operation allows to mark two or more `objectFifos` as linked. This implies that the `objectFifos` form
 one dataflow movement which is split accross multiple `objectFifos`. Specifically, during the `objectFifo` lowering there will
-be less memory elements generated at the link point as the two `objectFifos` can share.
+be less memory elements generated at the link point (i.e., the shared tile of all `objectFifos` in the link) as the `objectFifos` can share.
 
-The two `objectFifos` which are linked must have a link point (i.e., a shared AIE tile).
-In L1, only `objectFifos` of same size may be linked. In L2, different sized objectFifos can be linked.
+The `objectFifos` which are linked must have a link point (i.e., a shared AIE tile).
 
 Example:
 ```
   aie.objectfifo @of1 (%t70, { %t72 }, 2) : !aie.objectfifo<memref<64xi16>>
   aie.objectfifo @of2 (%t72, { %t74 }, 2) : !aie.objectfifo<memref<64xi16>>
-  aie.objectfifo.link [@of1] -> [@of2] ()
+  aie.objectfifo.link [@of1] -> [@of2] ([] [])
 ```
-This operation links two `objectFifos` which have tile `%t72` as a link point.
+This operation links two `objectFifos` which have tile `%t72` as a link point. The offset input arrays are not required as the full size of
+the objects is transferred from @of1 to @of2.
 
 To achieve a broadcast pattern through the link tile, the output `objectFifo` should have a list of all the consumers tiles.
 To achieve a distribute pattern from the link tile, there should be multiple output `objectFifos` in the LinkOp. In this case,
-parts will be taken out of the input `objectFifo`'s buffers based on the sizes of the output `objectFifos`, in the order they
-were given in the LinkOp.
-The join pattern is the exact inverse of the distribute one.
+parts will be taken out of the input `objectFifo`'s buffers based on dst_offsets input array.
+The join pattern is the exact inverse of the distribute one and uses the src_offsets input array instead.
 
 Traits: `HasParent<DeviceOp>`
 
@@ -1296,6 +1339,8 @@ Traits: `HasParent<DeviceOp>`
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
 <tr><td><code>fifoIns</code></td><td>::mlir::ArrayAttr</td><td>symbol ref array attribute</td></tr>
 <tr><td><code>fifoOuts</code></td><td>::mlir::ArrayAttr</td><td>symbol ref array attribute</td></tr>
+<tr><td><code>src_offsets</code></td><td>::mlir::ArrayAttr</td><td>64-bit integer array attribute</td></tr>
+<tr><td><code>dst_offsets</code></td><td>::mlir::ArrayAttr</td><td>64-bit integer array attribute</td></tr>
 </table>
 
 
@@ -1513,7 +1558,8 @@ Traits: `HasParent<PacketFlowOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -1593,7 +1639,8 @@ Traits: `SingleBlockImplicitTerminator<EndOp>`, `SingleBlock`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>source_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -1630,7 +1677,8 @@ Traits: `HasParent<PacketFlowOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -1865,6 +1913,7 @@ Traits: `HasParent<DeviceOp>`
 * MM2S (`MM2S`){{% /markdown %}}</details></td></tr>
 <tr><td><code>channel_index</code></td><td>::mlir::IntegerAttr</td><td>64-bit signless integer attribute</td></tr>
 <tr><td><code>col</code></td><td>::mlir::IntegerAttr</td><td>64-bit signless integer attribute</td></tr>
+<tr><td><code>plio</code></td><td>::mlir::BoolAttr</td><td>bool attribute</td></tr>
 </table>
 
 
@@ -2009,7 +2058,11 @@ to it.
 Note that row 0 of the Tile array is different from other rows, since it models the shim interface between
 the AIE array proper and the PL.  The South-West/Lower Right most core exists in Tile(0,1)
 
-Interfaces: `FlowEndPoint`, `InferTypeOpInterface`, `OpAsmOpInterface`
+Traits: `AlwaysSpeculatableImplTrait`
+
+Interfaces: `ConditionallySpeculatable`, `FlowEndPoint`, `InferTypeOpInterface`, `NoMemoryEffect (MemoryEffectOpInterface)`, `OpAsmOpInterface`
+
+Effects: `MemoryEffects::Effect{}`
 
 #### Attributes:
 
@@ -2095,7 +2148,8 @@ represented by an [aie.tile](#aietile-aietileop) operation.
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_bundle</code></td><td>xilinx::AIE::WireBundleAttr</td><td><details><summary>Bundle of wires</summary>{{% markdown %}}Enum cases:
 * Core (`Core`)
 * DMA (`DMA`)
@@ -2106,7 +2160,8 @@ represented by an [aie.tile](#aietile-aietileop) operation.
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 </table>
 
 #### Operands:
@@ -2126,7 +2181,7 @@ represented by an [aie.tile](#aietile-aietileop) operation.
 Syntax:
 
 ```
-#aie.bd_dim_layout_arr_arr<
+#aie.bd_dim_layout_array_array<
   ::llvm::ArrayRef<BDDimLayoutArrayAttr>   # value
 >
 ```
@@ -2145,7 +2200,7 @@ Syntax:
 Syntax:
 
 ```
-#aie.bd_dim_layout_arr<
+#aie.bd_dim_layout_array<
   ::llvm::ArrayRef<BDDimLayoutAttr>   # value
 >
 ```
@@ -2181,6 +2236,72 @@ Syntax:
 | size | `uint16_t` |  |
 | stride | `uint32_t` |  |
 
+### BDPadLayoutArrayAttr
+
+
+
+Syntax:
+
+```
+#aie.bd_pad_layout_array<
+  ::llvm::ArrayRef<BDPadLayoutAttr>   # value
+>
+```
+
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| value | `::llvm::ArrayRef<BDPadLayoutAttr>` |  |
+
+### BDPadLayoutAttr
+
+
+    Tuple encoding number of zeros before and after on that dimension in an AIE2 
+    n-dimensional buffer descriptor;
+  
+
+Syntax:
+
+```
+#aie.bd_pad_layout<
+  uint16_t,   # const_pad_before
+  uint16_t   # const_pad_after
+>
+```
+
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| const_pad_before | `uint16_t` |  |
+| const_pad_after | `uint16_t` |  |
+
+### PacketInfoAttr
+
+
+    Tuple encoding the type and header of a packet;
+  
+
+Syntax:
+
+```
+#aie.packet_info<
+  uint16_t,   # pkt_type
+  uint16_t   # pkt_id
+>
+```
+
+
+#### Parameters:
+
+| Parameter | C++ type | Description |
+| :-------: | :-------: | ----------- |
+| pkt_type | `uint16_t` |  |
+| pkt_id | `uint16_t` |  |
+
 ## Type constraints
 
 ### AIE ObjectFifoSubview type
@@ -2190,4 +2311,112 @@ Syntax:
 ### AIE objectFifo type
 
 
+
+## Enums
+
+### AIEArch
+
+AIE Architecture
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| AIE1 | `1` | AIE1 |
+| AIE2 | `2` | AIE2 |
+
+### AIEDevice
+
+AIE Device
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| xcvc1902 | `1` | xcvc1902 |
+| xcve2302 | `2` | xcve2302 |
+| xcve2802 | `3` | xcve2802 |
+| npu1 | `4` | npu1 |
+| npu1_1col | `5` | npu1_1col |
+| npu1_2col | `6` | npu1_2col |
+| npu1_3col | `7` | npu1_3col |
+| npu1_4col | `8` | npu1_4col |
+
+### CascadeDir
+
+Directions for cascade
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| South | `3` | South |
+| West | `4` | West |
+| North | `5` | North |
+| East | `6` | East |
+
+### DMAChannelDir
+
+DMA Channel direction
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| S2MM | `0` | S2MM |
+| MM2S | `1` | MM2S |
+
+### LockAction
+
+lock acquire/release
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| Acquire | `0` | Acquire |
+| AcquireGreaterEqual | `2` | AcquireGreaterEqual |
+| Release | `1` | Release |
+
+### LockBlocking
+
+lock operation is blocking
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| NonBlocking | `0` | NonBlocking |
+| Blocking | `1` | Blocking |
+
+### ObjectFifoPort
+
+Ports of an object FIFO
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| Produce | `0` | Produce |
+| Consume | `1` | Consume |
+
+### WireBundle
+
+Bundle of wires
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| Core | `0` | Core |
+| DMA | `1` | DMA |
+| FIFO | `2` | FIFO |
+| South | `3` | South |
+| West | `4` | West |
+| North | `5` | North |
+| East | `6` | East |
+| PLIO | `7` | PLIO |
+| NOC | `8` | NOC |
+| Trace | `9` | Trace |
+| Ctrl | `10` | Ctrl |
 
